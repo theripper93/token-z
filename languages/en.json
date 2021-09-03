@@ -1,3 +1,7 @@
 {
-    "MODULE.hello": "hello"
+    "tokenz": {
+        "tokenconfig":{
+            "zindex": "Z-Index"
+        }
+    }
 }

@@ -1,7 +1,7 @@
 {
   "name": "token-z",
-  "title": "token-z",
-  "description": "desc",
+  "title": "Token Z",
+  "description": "Easly manage the Z-Index of tokens",
   "version": "0.1",
   "author": "theripper93",
   "authors": [
@@ -19,12 +19,9 @@
       }
   ],
   "scripts": [
-      "./scripts/main.js",
-      "./scripts/config.js",
-      "./scripts/module.js"
+      "./scripts/main.js"
   ],
   "styles": [
-      "./styles/module.css"
   ],
   "packs": [
   ],
