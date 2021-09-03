@@ -2,9 +2,20 @@ Hooks.on("canvasReady", () => {
   canvas.tokens.sortableChildren = true;
 });
 
-Hooks.once("init", async function () {});
+Hooks.once("init", async function () {
+  function tokenZRefresh(wrapped, ...args) {
+    wrapped(...args);
+    const flag = this.data.flags["token-z"]?.zIndex ?? 0;
+    const controlled = this._controlled ? 1 : 0;
+    this.zIndex =
+      2 +
+      this.data.elevation * 10 -
+      this.data.width -
+      this.data.height +
+      controlled +
+      flag;
+  }
 
-Hooks.once("ready", async function () {
   libWrapper.register(
     "token-z",
     "Token.prototype.refresh",
@@ -12,17 +23,6 @@ Hooks.once("ready", async function () {
     "WRAPPER"
   );
 });
-
-function tokenZRefresh(wrapped, ...args) {
-  wrapped(...args);
-  this.zIndex =
-    2 +
-      this.data.elevation * 10 -
-      this.data.width -
-      this.data.height +
-      this._controlled +
-      this.data.flags["token-z"]?.zIndex || 0;
-}
 
 Hooks.on("renderTokenConfig", (app, html, data) => {
   let zIndex = app.object.getFlag("token-z", "zIndex") || 0;
