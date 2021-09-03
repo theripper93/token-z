@@ -7,13 +7,7 @@ Hooks.once("init", async function () {
     wrapped(...args);
     const flag = this.data.flags["token-z"]?.zIndex ?? 0;
     const controlled = this._controlled ? 1 : 0;
-    this.zIndex =
-      2 +
-      this.data.elevation * 10 -
-      this.data.width -
-      this.data.height +
-      controlled +
-      flag;
+    this.zIndex = 2 + this.data.elevation * 10 - this.data.width - this.data.height + controlled + flag;
   }
 
   libWrapper.register(
