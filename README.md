@@ -16,3 +16,4 @@ Token-Z is opinionated and will auto sort based on some parameters:
 - Elevation: With a weight of 10 (each 1 step in elevation means +10 in the zIndex)
 - Size: with a weight of -1 (this means a token that is 2x2 will have a -4 zIndex to it)
 - Selected: with a weight of 1 (a selected token will have a +1 zIndex applied)
+- Defeated: with a weight of -1000
