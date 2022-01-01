@@ -25,4 +25,3 @@ Hooks.on("renderTokenConfig", (app, html, data) => {
   html.find('input[name="elevation"]').closest(".form-group").after(newHtml);
   app.setPosition({height: "auto"});
 });
-
