@@ -22,6 +22,6 @@ Hooks.on("renderTokenConfig", (app, html, data) => {
               <input type="number" name="flags.token-z.zIndex" placeholder="units" value="${zIndex}">
           </div>
   `;
-  html.find('input[name="elevation"]').closest(".form-group").after(newHtml);
+  html.find('input[name="rotation"]').closest(".form-group").after(newHtml);
   app.setPosition({height: "auto"});
 });
