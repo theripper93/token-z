@@ -1,17 +1,11 @@
-Hooks.on("canvasReady", () => {
-  canvas.tokens.sortableChildren = true;
-});
-
-Hooks.once("init", async function () {
-  function tokenZRefresh(wrapped, ...args) {
-    wrapped(...args);
-    const flag = this.data.flags["token-z"]?.zIndex ?? 0;
-    const controlled = this._controlled ? 1 : 0;
-    const defeated = this.actor?.effects?.find(e => e.getFlag("core", "statusId") === CONFIG.Combat.defeatedStatusId) ? -1000 : 0;
-    this.zIndex = 2 + this.data.elevation * 10 - this.data.width - this.data.height + controlled + flag + defeated;
+Object.defineProperty(TokenDocument.prototype, "sort" , {
+  get: () => {
+    const flag = this.flags["token-z"]?.zIndex ?? 0;
+    const controlled = this.object?.controlled ? 1 : 0;
+    const defeated = this.actor?.effects?.find(e => e.getFlag("core", "statusId") === CONFIG.specialStatusEffects.DEFEATED) ? -1000 : 0;
+    return 2 - this.width - this.height + controlled + flag + defeated;
   }
-  libWrapper.register("token-z","Token.prototype.refresh",tokenZRefresh,"WRAPPER");
-});
+})
 
 Hooks.on("renderTokenConfig", (app, html, data) => {
   let zIndex = app.token.getFlag("token-z", "zIndex") || 0;
