@@ -1,5 +1,5 @@
 Object.defineProperty(TokenDocument.prototype, "sort" , {
-  get: () => {
+  get: function(){
     if(!(this instanceof TokenDocument)) return 0;
     const flag = this.flags["token-z"]?.zIndex ?? 0;
     const controlled = this.object?.controlled ? 1 : 0;
