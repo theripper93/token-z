@@ -1,10 +1,6 @@
 Object.defineProperty(TokenDocument.prototype, "sort" , {
-<<<<<<< HEAD
   get: function(){
     if(!(this instanceof TokenDocument)) return 0;
-=======
-  get: function () {
->>>>>>> 57e373d812b9f895d0a1a8a335e36f5195a84a46
     const flag = this.flags["token-z"]?.zIndex ?? 0;
     const controlled = this._object?.controlled ? 1 : 0;
     const defeated = this.actor?.effects?.find(e => e.getFlag("core", "statusId") === CONFIG.specialStatusEffects.DEFEATED) ? -1000 : 0;
