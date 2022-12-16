@@ -9,6 +9,10 @@ Object.defineProperty(TokenDocument.prototype, "sort" , {
   set: function (value) {}
 })
 
+Hooks.on("controlToken", (token, controlled) => {
+  if(controlled) token.mesh.zIndex += 1;
+})
+
 Hooks.on("renderTokenConfig", (app, html, data) => {
   let zIndex = app.token.getFlag("token-z", "zIndex") || 0;
 
