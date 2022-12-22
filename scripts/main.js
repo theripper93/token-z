@@ -13,6 +13,33 @@ Hooks.on("controlToken", (token, controlled) => {
   if(controlled) token.mesh.zIndex += 1;
 })
 
+hoveredTarget = null;
+
+function getBack() {
+  const tokens = canvas.tokens.objects.children;
+  return Math.min(-2000, ((tokens.length > 0) ? tokens[0].document.sort : -2000));
+}
+
+async function pushTokenBackListener(event) {
+  if (event.isComposing) return;
+
+  if (hoveredTarget && (event.key == 'z') && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.repeat) {
+    const back = getBack() - (hoveredTarget.controlled ? 2 : 1);
+    await hoveredTarget.document.setFlag("token-z", "zIndex", back);
+    canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
+  }
+}
+
+Hooks.on("hoverToken", (token, hoverOn) => {
+  if (hoverOn) {
+    hoveredTarget = token;
+    window.addEventListener('keydown', pushTokenBackListener);
+  } else {
+    window.removeEventListener('keydown', pushTokenBackListener);
+    hoveredTarget = null;
+  }
+});
+
 Hooks.on("renderTokenConfig", (app, html, data) => {
   let zIndex = app.token.getFlag("token-z", "zIndex") || 0;
 
