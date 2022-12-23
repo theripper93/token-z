@@ -1,6 +1,20 @@
+Hooks.once("setup", () => {
+  game.keybindings.register("token-z", "send-to-back-key", {
+    name: "tokenz.send-to-back.name",
+    hint: "tokenz.send-to-back.hint",
+    editable: [{ key: 'KeyZ' }],
+    restricted: false,
+    onDown: pushTokenBack
+  });
+});
+
 Object.defineProperty(TokenDocument.prototype, "sort" , {
   get: function(){
     if(!(this instanceof TokenDocument)) return 0;
+
+    const zIndexOverride = this["token-z"]?.zIndexOverride;
+    if(typeof zIndexOverride === "number") return zIndexOverride;
+
     const flag = this.flags["token-z"]?.zIndex ?? 0;
     const controlled = this._object?.controlled ? 1 : 0;
     const defeated = this.actor?.effects?.find(e => e.getFlag("core", "statusId") === CONFIG.specialStatusEffects.DEFEATED) ? -1000 : 0;
@@ -13,32 +27,19 @@ Hooks.on("controlToken", (token, controlled) => {
   if(controlled) token.mesh.zIndex += 1;
 })
 
-hoveredTarget = null;
-
 function getBack() {
   const tokens = canvas.tokens.objects.children;
   return Math.min(-2000, ((tokens.length > 0) ? tokens[0].document.sort : -2000));
 }
 
-async function pushTokenBackListener(event) {
-  if (event.isComposing) return;
-
-  if (hoveredTarget && (event.key == 'z') && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.repeat) {
-    const back = getBack() - (hoveredTarget.controlled ? 2 : 1);
-    await hoveredTarget.document.setFlag("token-z", "zIndex", back);
+function pushTokenBack(event) {
+  const hoveredToken = canvas.tokens.hover;
+  if (hoveredToken && !event.repeat) {
+    const localStorage = (hoveredToken.document["token-z"] ??= {});
+    localStorage.zIndexOverride = (getBack() - 1);
     canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
   }
 }
-
-Hooks.on("hoverToken", (token, hoverOn) => {
-  if (hoverOn) {
-    hoveredTarget = token;
-    window.addEventListener('keydown', pushTokenBackListener);
-  } else {
-    window.removeEventListener('keydown', pushTokenBackListener);
-    hoveredTarget = null;
-  }
-});
 
 Hooks.on("renderTokenConfig", (app, html, data) => {
   let zIndex = app.token.getFlag("token-z", "zIndex") || 0;
