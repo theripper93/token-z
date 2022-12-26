@@ -1,13 +1,3 @@
-Hooks.once("setup", () => {
-  game.keybindings.register("token-z", "send-to-back-key", {
-    name: "tokenz.send-to-back.name",
-    hint: "tokenz.send-to-back.hint",
-    editable: [{ key: 'KeyZ' }],
-    restricted: false,
-    onDown: pushTokenBack
-  });
-});
-
 Object.defineProperty(TokenDocument.prototype, "sort" , {
   get: function(){
     if(!(this instanceof TokenDocument)) return 0;
@@ -27,20 +17,6 @@ Hooks.on("controlToken", (token, controlled) => {
   if(controlled) token.mesh.zIndex += 1;
 })
 
-function getBack() {
-  const tokens = canvas.tokens.objects.children;
-  return Math.min(-2000, ((tokens.length > 0) ? tokens[0].document.sort : -2000));
-}
-
-function pushTokenBack(event) {
-  const hoveredToken = canvas.tokens.hover;
-  if (hoveredToken && !event.repeat) {
-    const localStorage = (hoveredToken.document["token-z"] ??= {});
-    localStorage.zIndexOverride = (getBack() - 1);
-    canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
-  }
-}
-
 Hooks.on("renderTokenConfig", (app, html, data) => {
   let zIndex = app.token.getFlag("token-z", "zIndex") || 0;
 
@@ -52,4 +28,25 @@ Hooks.on("renderTokenConfig", (app, html, data) => {
   `;
   html.find('input[name="rotation"]').closest(".form-group").after(newHtml);
   app.setPosition({height: "auto"});
+});
+
+//Pushback
+
+Hooks.once("setup", () => {
+  game.keybindings.register("token-z", "send-to-back-key", {
+    name: "tokenz.send-to-back.name",
+    hint: "tokenz.send-to-back.hint",
+    editable: [{ key: 'KeyZ' }],
+    restricted: false,
+    onDown: pushTokenBack
+  });
+  
+  function pushTokenBack(event) {
+    const hoveredToken = canvas.tokens.hover;
+    if (hoveredToken && !event.repeat) {
+      const localStorage = (hoveredToken.document["token-z"] ??= {});
+      localStorage.zIndexOverride = Math.min(-2000, ...canvas.tokens.placeables.map(t => t.document.sort)) - 1;
+      hoveredToken.mesh.zIndex = localStorage.zIndexOverride;
+    }
+  }
 });
