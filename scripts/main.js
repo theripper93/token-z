@@ -47,6 +47,7 @@ Hooks.once("setup", () => {
       const localStorage = (hoveredToken.document["token-z"] ??= {});
       localStorage.zIndexOverride = Math.min(-2000, ...canvas.tokens.placeables.map(t => t.document.sort)) - 1;
       hoveredToken.mesh.zIndex = localStorage.zIndexOverride;
+      canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
     }
   }
 });
