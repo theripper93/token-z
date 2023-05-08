@@ -30,6 +30,10 @@ Hooks.on("renderTokenConfig", (app, html, data) => {
   app.setPosition({height: "auto"});
 });
 
+Hooks.on("refreshToken", (token) => {
+  canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
+});
+
 //Pushback
 
 Hooks.once("setup", () => {
