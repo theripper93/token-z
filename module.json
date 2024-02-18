@@ -32,8 +32,7 @@
   "download": "https://github.com/theripper93/token-z/releases/latest/download/module.zip",
   "socket": true,
   "id": "token-z",
-  "relationships": {
-  },
+  "relationships": {},
   "compatibility": {
     "minimum": "11",
     "verified": "11"
