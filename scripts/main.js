@@ -13,6 +13,12 @@ Object.defineProperty(TokenDocument.prototype, "sort" , {
   set: function (value) {}
 })
 
+Hooks.on("renderTokenHUD", (app, html, data) => {
+  html = html[0] ?? html;
+  html.querySelector(`[data-action="sort-up"]`).remove();
+  html.querySelector(`[data-action="sort-down"]`).remove();
+})
+
 Hooks.on("controlToken", (token, controlled) => {
   if(controlled) token.mesh.zIndex += 1;
 })
