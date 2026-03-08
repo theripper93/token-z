@@ -1,0 +1,11 @@
+{
+    "tokenz": {
+        "tokenconfig":{
+            "zindex": "Deslocamento do Índice Z"
+        },
+        "send-to-back": {
+            "name": "Enviar Token para Trás",
+            "hint": "Quando o cursor do mouse estiver sobre uma pilha de tokens, pressione esta tecla para mover o token do topo para a base da pilha."
+        }
+    }
+}
