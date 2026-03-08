@@ -22,6 +22,12 @@
       "name": "日本語",
       "path": "languages/ja.json",
       "flags": {}
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "languages/pt-BR.json",
+      "flags": {}
     }
   ],
   "scripts": [
@@ -37,4 +43,5 @@
     "minimum": "13",
     "verified": "13"
   }
+
 }
