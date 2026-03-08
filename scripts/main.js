@@ -25,6 +25,10 @@ Hooks.on("refreshToken", (token) => {
   canvas.tokens.objects.sortDirty = canvas.primary.sortDirty = true;
 });
 
+Hooks.on("preCreateToken", (document, options, userId) => {
+  document.updateSource({ "sort": 0 });
+});
+
 //Pushback
 
 Hooks.once("setup", () => {
